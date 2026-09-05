@@ -1,0 +1,9 @@
+name: Debug Keystore
+on: workflow_dispatch
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check keystore password
+        run: keytool -list -v -keystore ks.keystore -storepass Morphe_Xky
