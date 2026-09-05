@@ -5,13 +5,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Identify keystore file type
+      - name: Download BouncyCastle provider
+        run: curl -L -o bcprov.jar https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/1.78/bcprov-jdk18on-1.78.jar
+      - name: Try as BKS
         run: |
-          file ks.keystore
-          xxd -l 32 ks.keystore
-      - name: Try as PKCS12
-        continue-on-error: true
-        run: keytool -list -v -keystore ks.keystore -storepass Morphe_Xky -storetype PKCS12
-      - name: Try as JKS
-        continue-on-error: true
-        run: keytool -list -v -keystore ks.keystore -storepass Morphe_Xky -storetype JKS
+          keytool -list -v -keystore ks.keystore -storepass Morphe_Xky \
+            -storetype BKS \
+            -providerclass org.bouncycastle.jce.provider.BouncyCastleProvider \
+            -providerpath bcprov.jar
