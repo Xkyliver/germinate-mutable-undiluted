@@ -5,5 +5,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check keystore password
-        run: keytool -list -v -keystore ks.keystore -storepass Morphe_Xky
+      - name: Identify keystore file type
+        run: |
+          file ks.keystore
+          xxd -l 32 ks.keystore
+      - name: Try as PKCS12
+        continue-on-error: true
+        run: keytool -list -v -keystore ks.keystore -storepass Morphe_Xky -storetype PKCS12
+      - name: Try as JKS
+        continue-on-error: true
+        run: keytool -list -v -keystore ks.keystore -storepass Morphe_Xky -storetype JKS
