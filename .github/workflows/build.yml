@@ -25,6 +25,18 @@ jobs:
           fetch-depth: 0
           submodules: true
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Scraper Requirements
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install cloudscraper beautifulsoup4
+          chmod +x download_apkmirror.py || true
+
       - name: Update config
         if: ${{ inputs.from_ci }}
         run: |
